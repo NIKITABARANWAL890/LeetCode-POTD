@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int minimumOperations(TreeNode* root) {
+        if (!root) return 0;
+
+        int count = 0;
+        queue<TreeNode*> pq;
+        pq.push(root);
+
+        while (!pq.empty()) {
+            int levelSize = pq.size(); 
+            vector<int> currentLevel;
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode* front = pq.front();
+                pq.pop();
+
+                currentLevel.push_back(front->val);
+
+                if (front->left) pq.push(front->left);
+                if (front->right) pq.push(front->right);
+            }
+
+            count += calculateSwapsUsingCorrectedMap(currentLevel);
+        }
+
+        return count;
+    }
+
+private:
+    int calculateSwapsUsingCorrectedMap(vector<int>& currentLevel) {
+        int n = currentLevel.size();
+        vector<int> sortedLevel = currentLevel; 
+        sort(sortedLevel.begin(), sortedLevel.end()); 
+
+        unordered_map<int, int> indexMap;
+        for (int i = 0; i < n; i++) {
+            indexMap[currentLevel[i]] = i;
+        }
+
+        int swaps = 0;
+
+        for (int i = 0; i < n; i++) {
+            while (currentLevel[i] != sortedLevel[i]) {
+                int correctIndex = indexMap[sortedLevel[i]];
+
+                indexMap[currentLevel[i]] = correctIndex;
+                indexMap[currentLevel[correctIndex]] = i;
+
+                swap(currentLevel[i], currentLevel[correctIndex]);
+                swaps++;
+            }
+        }
+
+        return swaps;
+    }
+};
