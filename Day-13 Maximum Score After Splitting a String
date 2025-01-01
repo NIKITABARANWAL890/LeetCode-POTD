@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxScore(string s) {
+        int ones = 0, zeros = 0;
+        int max_sum = INT_MIN;
+        if(s[0]=='0') zeros++;
+        for(int i=1; i<s.size(); i++){
+            if(s[i]=='1') ones++;
+        }
+        max_sum = zeros + ones;
+        int i = 1;
+        while(i<s.size()-1){
+            if(s[i]=='0') zeros++;
+            if(s[i]=='1') ones--;
+            max_sum = max(max_sum, zeros+ones);
+            i++;
+        }
+        return max_sum;
+    }
+};
