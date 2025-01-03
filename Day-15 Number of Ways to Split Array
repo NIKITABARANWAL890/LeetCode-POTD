@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int waysToSplitArray(vector<int>& nums) {
+        long long leftSum = nums[0];
+        long long rightSum = 0;
+        int count=0;
+        for(int i=1; i<nums.size(); i++){
+            rightSum += nums[i];
+        }
+        for(int i=1; i<nums.size(); i++){
+            if(leftSum>=rightSum) count++;
+            leftSum+=nums[i];
+            rightSum-=nums[i];
+        }
+        return count;
+    }
+};
