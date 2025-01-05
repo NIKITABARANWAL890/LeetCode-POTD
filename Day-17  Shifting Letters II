@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string shiftingLetters(string s, vector<vector<int>>& shifts) {
+        int n = s.size();
+        vector<int> steps(n, 0);
+        
+        for (const auto& shift : shifts) {
+            int start = shift[0];
+            int end = shift[1];
+            int direction = shift[2];
+            int increment = (direction == 1) ? 1 : -1;
+            
+            steps[start] += increment;
+            if (end + 1 < n) {
+                steps[end + 1] -= increment;
+            }
+        }
+        
+        for (int i = 1; i < n; i++) {
+            steps[i] += steps[i - 1];
+        }
+        
+        for (int i = 0; i < n; i++) {
+            int shift = steps[i] % 26;  
+            s[i] = (s[i] - 'a' + shift + 26) % 26 + 'a';
+        }
+
+        return s;
+    }
+};
