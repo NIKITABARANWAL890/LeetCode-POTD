@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> minOperations(string boxes) {
+        int n = boxes.size();
+        vector<int>answer(n);
+        int rightOnes = 0;
+        int leftOnes = 0;
+        int steps=0;
+        for(int i=0; i<n; i++){
+            if(boxes[i]=='1'){
+                rightOnes++;
+                steps += abs(i-0);
+            } 
+        }
+        for(int i=0; i<n; i++){
+            answer[i]=steps;
+            if(boxes[i]=='1'){
+                rightOnes--;
+                leftOnes++;
+            }
+            steps = steps-rightOnes+leftOnes;
+        }
+        return answer;
+    }
+};
