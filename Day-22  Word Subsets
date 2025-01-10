@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& words1,vector<string>& words2) {
+        unordered_map<char, int> maxFreq;
+        for (const string& word : words2) {
+            unordered_map<char, int> freq;
+            for (char c : word) {
+                freq[c]++;
+            }
+            for (const auto& [c, count] : freq) {
+                maxFreq[c] = max(maxFreq[c], count);
+            }
+        }
+
+        vector<string> result;
+        for (const string& word : words1) {
+            unordered_map<char, int> wordFreq;
+            for (char c : word) {
+                wordFreq[c]++;
+            }
+            bool isUniversal = true;
+            for (const auto& [c, count] : maxFreq) {
+                if (wordFreq[c] < count) {
+                    isUniversal = false;
+                    break;
+                }
+            }
+
+            if (isUniversal) {
+                result.push_back(word);
+            }
+        }
+
+        return result; 
+    }
+};
