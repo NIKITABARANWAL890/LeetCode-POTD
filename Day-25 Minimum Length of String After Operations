@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minimumLength(string s) {
+       map<char, int>mp;
+       int len=0;
+       for(int i=0; i<s.size(); i++){
+        mp[s[i]]++;
+       } 
+       for(auto &it:mp){
+        if(it.second <= 2) len += it.second;
+        else if(it.second % 2==0) len += 2;
+        else len+=1;
+       }
+       return len;
+    }
+};
