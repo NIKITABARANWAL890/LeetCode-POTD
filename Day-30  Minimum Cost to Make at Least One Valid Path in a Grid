@@ -1,0 +1,64 @@
+static bool fast = []()
+{
+    std::cin.tie(0)->sync_with_stdio(false);
+    return true;
+}();
+
+class Solution
+{
+public:
+    int minCost(vector<vector<int>>& grid)
+    {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        std::priority_queue<std::tuple<int, int, int>, std::vector<std::tuple<int, int, int>>, std::greater<std::tuple<int, int, int>>> Q; // {cost, r, c}
+        Q.push({0, 0, 0});
+
+        std::vector<std::vector<int>> dist(m, std::vector<int>(n, INT_MAX));
+        dist[0][0] = 0;
+
+        while (!Q.empty())
+        {
+            std::tuple<int, int, int> cur = Q.top();
+            Q.pop();
+            int cost = std::get<0>(cur);
+            int r = std::get<1>(cur);
+            int c = std::get<2>(cur);
+
+            if (r == m - 1 && c == n - 1)
+            {
+                return cost;
+            }
+
+            if (cost > dist[r][c])
+            {
+                continue;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int next_r = r + directions[i].first;
+                int next_c = c + directions[i].second;
+                int next_cost = cost;
+                if (next_r >= 0 && next_r < m && next_c >= 0 && next_c < n)
+                {
+                    if (grid[r][c] != (i + 1))
+                    {
+                        next_cost++;
+                    }
+
+                    if (next_cost < dist[next_r][next_c])
+                    {
+                        dist[next_r][next_c] = next_cost;
+                        Q.push({next_cost, next_r, next_c});
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+};
