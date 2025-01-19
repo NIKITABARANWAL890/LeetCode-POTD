@@ -1,0 +1,41 @@
+
+class Solution {
+public:
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        int m = heightMap.size();
+        int n = heightMap[0].size();
+        
+        vector<vector<bool>> vis(m, vector<bool>(n, false));
+        auto cmp = [](const vector<int>& a, const vector<int>& b) {
+            return a[0] > b[0]; 
+        };
+        priority_queue<vector<int>, vector<vector<int>>, decltype(cmp)> pq(cmp);
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+                    pq.push({heightMap[i][j], i, j});
+                    vis[i][j] = true;
+                }
+            }
+        }
+
+        int ans = 0;
+        vector<int> dirs = {-1, 0, 1, 0, -1}; 
+        while (!pq.empty()) {
+            auto p = pq.top();
+            pq.pop();
+            for (int k = 0; k < 4; k++) {
+                int x = p[1] + dirs[k];
+                int y = p[2] + dirs[k + 1];
+                if (x >= 0 && x < m && y >= 0 && y < n && !vis[x][y]) {
+                    ans += max(0, p[0] - heightMap[x][y]);
+                    vis[x][y] = true;
+                    pq.push({max(p[0], heightMap[x][y]), x, y});
+                }
+            }
+        }
+
+        return ans;
+    }
+};
