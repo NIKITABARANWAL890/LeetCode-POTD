@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool areAlmostEqual(string s1, string s2) {
+        if(s1.size() != s2.size()) return false;
+        if(s1==s2) return true;
+        int count=0;
+        vector<char>ch(2);
+        bool ans=false;
+        for(int i=0; i<s1.size(); i++){
+            if(s1[i]!=s2[i]){
+                if(count==1 && (s1[i]==ch[1] && s2[i]==ch[0])){
+                    count++;
+                    ans = true;
+                }else{
+                    ans=false;
+                    ch[0] = s1[i];
+                    ch[1] = s2[i];
+                    count++;
+                }
+            }
+        }
+        return ans; 
+    }
+};
