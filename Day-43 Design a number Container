@@ -1,0 +1,75 @@
+Approach 1 Using Map, Set
+
+class NumberContainers {
+public:
+map<int, int>IdxtoNum;
+map<int, set<int>>NumtoIdx;
+    NumberContainers() {
+        // do nothing
+    }
+    
+    void change(int index, int number) {
+        if(IdxtoNum.find(index)!=IdxtoNum.end()){
+            int prevNum = IdxtoNum[index];
+            NumtoIdx[prevNum].erase(index);
+            if(NumtoIdx[prevNum].empty()){
+                NumtoIdx.erase(prevNum);
+            }
+        }
+        IdxtoNum[index] = number;
+        NumtoIdx[number].insert(index);
+    }
+    
+    int find(int number) {
+        int ans = -1;
+        if(NumtoIdx.find(number)!=NumtoIdx.end()){
+            ans = *NumtoIdx[number].begin();
+        }
+        return ans;
+    }
+};
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers* obj = new NumberContainers();
+ * obj->change(index,number);
+ * int param_2 = obj->find(number);
+ */
+
+
+Approach-2 Using Map, MinHeap
+
+class NumberContainers {
+public:
+map<int, int>IdxtoNum;
+map<int, priority_queue<int, vector<int>, greater<int>>>NumtoIdx;
+    NumberContainers() {
+        // do nothing
+    }
+    
+    void change(int index, int number) {
+        IdxtoNum[index] = number;
+        NumtoIdx[number].push(index);
+    }
+    
+    int find(int number) {
+        int val = -1;
+        if(NumtoIdx.find(number)==NumtoIdx.end()) return -1;
+            while(!NumtoIdx[number].empty()){
+                val = NumtoIdx[number].top();
+                if(IdxtoNum[val] == number){
+                    return val;
+                }
+                NumtoIdx[number].pop();
+            }
+        return -1;
+    }
+};
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers* obj = new NumberContainers();
+ * obj->change(index,number);
+ * int param_2 = obj->find(number);
+ */
+
