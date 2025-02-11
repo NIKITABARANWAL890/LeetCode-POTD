@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string removeOccurrences(string s, string part) {
+        int m = part.size();
+        if(s.size()<m) return s;
+        while(s.size()>0 && s.size()>=m){
+            if(s.contains(part)){
+                int start = s.find(part);
+                s.erase(start, m);
+            }else{
+                break;
+            }
+        }
+        return s;
+    }
+};
