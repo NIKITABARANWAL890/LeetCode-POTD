@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maximumSum(vector<int>& nums) {
+        int maxSum = -1;
+        map<int, priority_queue<int>>mp;
+        for(int i=0; i<nums.size(); i++){
+            int n = nums[i];
+            int sum = 0;
+            while(n){
+                sum += n%10;
+                n=n/10;
+            }
+            if(mp.find(sum)!=mp.end()){
+                maxSum = max(maxSum, (nums[i]+mp[sum].top()));
+            }
+            mp[sum].push(nums[i]);
+        }
+        return maxSum;
+    }
+};
