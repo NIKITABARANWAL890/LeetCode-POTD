@@ -1,0 +1,27 @@
+class Solution {
+public:
+
+bool checkSum(string s, int num, int ind, int sum){
+    if(sum>num) return false;
+    if(ind==s.size() && num==sum){
+        return true;
+    }
+    if(ind==s.size())return false;
+    for(int i=ind; i<s.size(); i++){
+        string str = s.substr(ind, i-ind+1);
+        int val = stoi(str);
+        if(checkSum(s, num, i+1, sum+val)) return true;
+    }
+    return false;
+}
+    int punishmentNumber(int n) {
+        int ans = 0;
+        for(int i=1; i<=n; i++){
+            string s = to_string(i*i);
+            if(checkSum(s, i, 0, 0)){
+                ans += (i*i);
+            }
+        }
+        return ans;
+    }
+};
