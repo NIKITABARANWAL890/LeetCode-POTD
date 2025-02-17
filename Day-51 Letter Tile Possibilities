@@ -1,0 +1,53 @@
+Approach-1
+
+class Solution {
+public:
+void getnumTilePossibilities(string tiles, set<string>&ans, vector<bool>used, string current){
+    // if(current.size()==tiles.size()) return;
+    ans.insert(current);
+    for(int i=0; i<tiles.size(); i++){
+        if(used[i]==true) continue;
+        // TRY
+        used[i]=true;
+        current.push_back(tiles[i]);
+        getnumTilePossibilities(tiles, ans, used, current);
+        used[i]=false;
+        current.pop_back();
+    }
+}
+    int numTilePossibilities(string tiles) {
+        set<string>ans;
+        vector<bool>used(tiles.size(), false);
+        getnumTilePossibilities(tiles, ans, used, "");
+        return ans.size()-1;
+    }
+};
+
+
+Approach-2
+
+class Solution {
+public:
+int totalCount;
+void getnumTilePossibilities(vector<int>&vec){
+    totalCount++;
+    for(int i=0; i<26; i++){
+        if(vec[i]==0) continue;
+        // Try
+        vec[i]--;
+        // Explore
+        getnumTilePossibilities(vec);
+        // Undo
+        vec[i]++;
+    }
+}
+    int numTilePossibilities(string tiles) {
+        totalCount=0;
+        vector<int>vec(26, 0);
+        for(int i=0; i<tiles.size(); i++){
+            vec[tiles[i]-'A']++;
+        }
+        getnumTilePossibilities(vec);
+        return totalCount-1;
+    }
+};
