@@ -1,0 +1,28 @@
+class Solution {
+public:
+void getHappyStringHelper(int n, vector<string>&ans, string curr){
+    if(curr.size()>n) return;
+    if(curr.size()==n){
+        cout<<curr<<" "<<endl;
+        ans.push_back(curr);
+    }
+    for(int i=0; i<3; i++){
+        int ind = curr.size();
+        if(ind>0 && curr[ind-1]==(i+'a')){
+            continue;
+        }
+        curr.push_back(i+'a');
+        getHappyStringHelper(n, ans, curr);
+        curr.pop_back();
+    }
+    return;
+}
+    string getHappyString(int n, int k) {
+        vector<string>ans;
+        getHappyStringHelper(n, ans, "");
+        if(k>ans.size()){
+            return "";
+        }
+        return ans[k-1];
+    }
+};
