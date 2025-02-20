@@ -1,0 +1,47 @@
+Method-1 O(n)
+
+class Solution {
+public:
+    string findDifferentBinaryString(vector<string>& nums) {
+        string ans = "";
+        for(int i=0; i<nums.size(); i++){
+            if(nums[i][i]=='0') ans.push_back('1');
+            else{
+                ans.push_back('0');
+            }
+        }
+        return ans;
+    }
+};
+
+
+Method-2 backtracking
+
+class Solution {
+public:
+void getfindDifferentBinaryString(vector<string>&nums, string &ans, map<string, int>&mp, int n, string &result){
+    if(ans.size()==n){
+        if(mp.find(ans)==mp.end()){
+            result = ans;
+            return;
+        }
+        return;
+    }
+    for(int i=0; i<2; i++){
+        ans.push_back(i+'0');
+        getfindDifferentBinaryString(nums, ans, mp, n, result);
+        ans.pop_back();
+    }
+}
+    string findDifferentBinaryString(vector<string>& nums) {
+        map<string, int>mp;
+        for(int i=0; i<nums.size(); i++){
+            mp[nums[i]]++;
+        }
+        int n = nums[0].size();
+        string ans = "";
+        string result = "";
+        getfindDifferentBinaryString(nums, ans, mp, n, result);
+        return result;
+    }
+};
