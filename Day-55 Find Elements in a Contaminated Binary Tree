@@ -1,0 +1,18 @@
+class FindElements {
+public:
+set<int>st;
+void getDFS(TreeNode* root, int val){
+    if(!root) return;
+    root->val = val;
+    st.insert(val);
+    getDFS(root->left, (2*val+1));
+    getDFS(root->right, (2*val+2));
+}
+    FindElements(TreeNode* root) {
+        getDFS(root, 0);
+    }
+    
+    bool find(int target) {
+       return st.count(target);
+    }
+};
