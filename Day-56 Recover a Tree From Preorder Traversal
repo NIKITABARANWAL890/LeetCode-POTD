@@ -1,0 +1,31 @@
+class Solution {
+public:
+    TreeNode* recoverFromPreorderHelper(string &traversal, int depth, int &i) {
+        if (i >= traversal.size()) return nullptr;
+
+        int j = i; // Start from i
+        while (j < traversal.size() && traversal[j] == '-') j++; // Count dashes
+        int dashCount = j - i; // Number of dashes
+
+        if (dashCount != depth) return nullptr; // Depth mismatch, return
+
+        i = j; // Move i to the number part
+
+        int num = 0;
+        while (i < traversal.size() && isdigit(traversal[i])) {
+            num = num * 10 + (traversal[i] - '0');
+            i++;
+        }
+
+        TreeNode* root = new TreeNode(num);
+        root->left = recoverFromPreorderHelper(traversal, depth + 1, i);
+        root->right = recoverFromPreorderHelper(traversal, depth + 1, i);
+
+        return root;
+    }
+
+    TreeNode* recoverFromPreorder(string traversal) {
+        int i = 0;
+        return recoverFromPreorderHelper(traversal, 0, i);
+    }
+};
