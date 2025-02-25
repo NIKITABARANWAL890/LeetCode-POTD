@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int numOfSubarrays(vector<int>& arr) {
+        //we will solve it using prefix sum
+        //First calc prefix sum then on basis of its parity we will do some operation
+        //if prefix sum comes out to be odd [.....i] upto i index all sumup to an odd no
+        //Question is how many subarrays ending at index i with odd sum is number of previously occured even prefix sum
+        //even+odd==odd  [...even_sum + ....i]==odd so [....i] odd
+        int odd=0,even=1;//this stores how many times prefixsum comes out to be even or odd
+        //even=1 represent complete arr till i
+        int prefixSum=0,ans=0,mod=1e9+7;
+
+        for(auto x:arr){
+            prefixSum+=x;
+            if(prefixSum&1){
+                odd++;
+                ans=(ans+even)%mod;
+            }else{
+                even++;
+                ans=(ans+odd)%mod;
+                //two cases of even i.e ebven+even=even or odd+odd=even
+                //odd+odd is our favorable case
+                //[...odd1+...odd2]==even  odd1 is already counted you need to count odd2
+            }
+        }
+
+        return ans;
+    }
+};
