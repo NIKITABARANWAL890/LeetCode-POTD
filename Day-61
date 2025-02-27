@@ -1,0 +1,86 @@
+//RECURSION
+
+class Solution {
+public:
+int getlenLongestFibSubseq(vector<int>&arr, map<int, int>&mp, int j, int k){
+    int target = arr[k]-arr[j];
+    if(mp.find(target)!=mp.end() && mp[target]<j){
+        int i = mp[target];
+        return getlenLongestFibSubseq(arr, mp, i, j)+1;
+    }
+    return 2;
+}
+    int lenLongestFibSubseq(vector<int>& arr) {
+        map<int, int>mp;
+        for(int i=0; i<arr.size(); i++){
+            mp[arr[i]]=i;
+        }
+        int maxLen = 0;
+        for(int j=1; j<arr.size(); j++){
+            for(int k=j+1; k<arr.size(); k++){
+                int len = getlenLongestFibSubseq(arr, mp, j, k);
+                if(len>=3) maxLen = max(len, maxLen);
+            }
+        }
+        return maxLen;
+    }
+};
+
+//MEMOIZARION
+
+class Solution {
+public:
+int getlenLongestFibSubseq(vector<int>&arr, map<int, int>&mp, int j, int k, vector<vector<int>>&memo){
+    if(memo[j][k]!=-1){
+        return memo[j][k];
+    }
+    int target = arr[k]-arr[j];
+    if(mp.find(target)!=mp.end() && mp[target]<j){
+        int i = mp[target];
+        return memo[j][k] = getlenLongestFibSubseq(arr, mp, i, j, memo)+1;
+    }
+    return memo[j][k] = 2;
+}
+    int lenLongestFibSubseq(vector<int>& arr) {
+        int n = arr.size();
+        vector<vector<int>>memo(n, vector<int>(n, -1));
+        map<int, int>mp;
+        for(int i=0; i<arr.size(); i++){
+            mp[arr[i]]=i;
+        }
+        int maxLen = 0;
+        for(int j=1; j<arr.size(); j++){
+            for(int k=j+1; k<arr.size(); k++){
+                int len = getlenLongestFibSubseq(arr, mp, j, k, memo);
+                if(len>=3) maxLen = max(len, maxLen);
+            }
+        }
+        return maxLen;
+    }
+};
+
+//DP
+
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        int n = arr.size();
+        vector<vector<int>>dp(n, vector<int>(n, 2));
+        map<int, int>mp;
+        for(int i=0; i<arr.size(); i++){
+            mp[arr[i]]=i;
+        }
+        int maxLen = 0;
+        for(int j=1; j<arr.size(); j++){
+            for(int k=j+1; k<arr.size(); k++){
+                int target = arr[k]-arr[j];
+                if(mp.count(target) && mp[target]<j){
+                    int i = mp[target];
+                    dp[j][k] = dp[i][j]+1;
+                }
+                maxLen = max(maxLen, dp[j][k]);
+            }
+        }
+        return maxLen>=3 ? maxLen:0;
+    }
+};
