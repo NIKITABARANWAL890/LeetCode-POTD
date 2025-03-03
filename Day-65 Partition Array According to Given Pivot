@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> pivotArray(vector<int>& nums, int pivot) {
+        int n = nums.size();
+        int equalCount = 0, smallCount = 0;
+        vector<int>ans(n);
+        for(int i=0; i<nums.size(); i++){
+            if(nums[i]<pivot) smallCount++;
+            else if(nums[i]==pivot) equalCount++;
+        }
+        int ind = smallCount;
+        for(int i=0; i<equalCount; i++){
+            ans[ind] = pivot;
+            ind++;
+        }
+        int j=0;
+        for(int i=0; i<nums.size(); i++){
+            if(nums[i]<pivot){
+                ans[j] = nums[i];
+                j++;
+            }else if(nums[i]==pivot){
+                continue;
+            }else{
+                ans[ind] = nums[i];
+                ind++;
+            }
+        }
+        return ans;
+    }
+};
