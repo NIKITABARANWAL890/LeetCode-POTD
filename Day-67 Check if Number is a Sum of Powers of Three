@@ -1,0 +1,13 @@
+class Solution {
+public:
+    bool checkPowersOfThreeHelper(int n, long long power) {
+        if (n == 0) return true;
+        if (power > n) return false;
+        
+        return checkPowersOfThreeHelper(n - power, power * 3) || checkPowersOfThreeHelper(n, power * 3);
+    }
+
+    bool checkPowersOfThree(int n) {
+        return checkPowersOfThreeHelper(n, 1);
+    }
+};
