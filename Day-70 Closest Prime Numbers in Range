@@ -1,0 +1,42 @@
+
+class Solution {
+public:
+    vector<int> closestPrimes(int left, int right) {
+        vector<bool> isPrime(right + 1, true); // Initialize all numbers as prime
+        isPrime[0] = isPrime[1] = false; // 0 and 1 are not prime
+
+        // Sieve of Eratosthenes
+        for (int i = 2; i * i <= right; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= right; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        // Collect prime numbers in the range [left, right]
+        vector<int> primeOnly;
+        for (int i = left; i <= right; i++) {
+            if (isPrime[i]) {
+                primeOnly.push_back(i);
+            }
+        }
+
+        // If there are fewer than 2 primes, return {-1, -1}
+        if (primeOnly.size() < 2) {
+            return {-1, -1};
+        }
+
+        // Find the closest prime pair
+        int mini = INT_MAX;
+        int a = -1, b = -1;
+        for (int i = 1; i < primeOnly.size(); i++) {
+            if (primeOnly[i] - primeOnly[i - 1] < mini) {
+                mini = primeOnly[i] - primeOnly[i - 1];
+                a = primeOnly[i - 1];
+                b = primeOnly[i];
+            }
+        }
+        return {a, b};
+    }
+};
