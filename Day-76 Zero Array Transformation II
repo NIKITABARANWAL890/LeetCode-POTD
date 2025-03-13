@@ -1,0 +1,29 @@
+int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        n = nums.size();
+        Q = queries.size();
+
+        auto lambda = [](int x) {
+            return x == 0;
+        };
+
+        if(all_of(begin(nums), end(nums), lambda)) {
+            return 0; //no query required because all are already zero
+        }
+
+        int l = 0;
+        int r = Q-1;
+        int k = -1;
+        while(l <= r) {
+            int mid = l + (r-l)/2;
+
+            if(checkWithDifferenceArrayTeq(nums, queries, mid) == true) {
+                k = mid+1; //possible answer
+                r = mid-1;
+            } else {
+                 l = mid+1;
+            }
+        }
+
+        return k;
+    }
+};
