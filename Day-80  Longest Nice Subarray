@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int longestNiceSubarray(vector<int>& nums) {
+        int n = nums.size();
+        int i = 0, j = 0;
+        int andVal = 0; 
+        int maxLen = 0;  
+        
+        while (j < n) {
+            while ((andVal & nums[j]) != 0) {
+                andVal ^= nums[i]; 
+                i++; 
+            }
+            
+            andVal |= nums[j];
+            maxLen = max(maxLen, j - i + 1);
+            j++;  
+        }
+        
+        return maxLen;
+    }
+};
